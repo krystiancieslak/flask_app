@@ -13,8 +13,8 @@ def template():
 
 @app.route("/getname", methods=["GET"])
 def login():
-    name = request.args.get('name', default = 1, type = str)
-    surname = request.args.get('surname', default = 1, type = str)
+    name = request.args.get('name', default = "Test", type = str)
+    surname = request.args.get('surname', default = "Testing", type = str)
     return f"Hello {name} {surname}"
 
 if __name__ == "__main__":
