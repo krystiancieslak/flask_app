@@ -1,5 +1,5 @@
-from urllib import request
-from flask import Flask, render_template, request
+from crypt import methods
+from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
 
@@ -12,10 +12,20 @@ def template():
     return render_template("index.html")
 
 @app.route("/getname", methods=["GET"])
-def login():
+def getname():
     name = request.args.get('name', default = "Test", type = str)
     surname = request.args.get('surname', default = "Testing", type = str)
     return f"Hello {name} {surname}"
+
+@app.route("/login", methods=["GET","POST"])
+def login():
+    if request.method == "POST":
+        username = request.form.get('username')
+        password = request.form.get('password')
+        if (username == "admin") and (password == "admin"):
+            return redirect("/")
+    else:
+        return render_template("login.html")
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
