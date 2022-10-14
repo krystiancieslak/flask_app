@@ -22,7 +22,8 @@ def login():
     if request.method == "POST":
         username = request.form.get('username')
         password = request.form.get('password')
-        if (username == "admin") and (password == "admin"):
+        verify = request.form.get('verify')
+        if (username == "admin") and (password == "admin") and (verify=="4"):
             return redirect("/")
     else:
         return render_template("login.html")
