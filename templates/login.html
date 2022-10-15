@@ -13,10 +13,13 @@
           request.form.username }}">
          <input type="password" placeholder="Password" name="password" value="{{
           request.form.password }}">
-        <input type="text" placeholder="2+2=" name="verify" value="{{
+        <input type="text" placeholder="{{a}}+{{b}}=" name="verify" value="{{
           request.form.verify }}">
         <input class="btn btn-default" type="submit" value="Login">
       </form>
+      {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}
+      {% endif %}
     </div>
   </body>
 </html>
