@@ -1,8 +1,10 @@
 from crypt import methods
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 import random
+import uuid
 
 app = Flask(__name__)
+app.config["SECRET_KEY"] = uuid.uuid4().hex
 
 @app.route("/")
 def home():
@@ -20,18 +22,47 @@ def getname():
 
 @app.route("/login", methods=["GET","POST"])
 def login():
-    if request.method == "GET":
-        a=random.randint(0,9)
-        b=random.randint(0,9)
-        c=a+b
-        print(c)
-        print(f"{a}+{b}=")
+    print("-------------------------------NEW REQUEST------------------------------")
     if request.method == "POST":
+        print("This is POST flow")
+    if request.method == "GET":
+        print("This is GET flow")
+        session["a"] = random.randint(0,9)
+        session["b"] = random.randint(0,9)
+
+    print("This is happening every time")
+
+    a=session["a"]
+    b=session["b"]
+
+    print("Current values used for checking:")
+    print(f"current value of a: {a}")
+    print(f"current value of b: {b}")
+    try:
+        print(f"current value of desired_value: {desired_value}")
+    except Exception as e:
+        print (f"Cannot print desired_value, error: {e}")
+
+    if request.method == "POST":
+        print("This is happening only in POST")
+        desired_value = a + b
+
+        print("Getting username, password and verify value...")
         username = request.form.get('username')
         password = request.form.get('password')
         verify = request.form.get('verify')
-        print(verify)
-        if (username == "admin") and (password == "admin") and (int(verify)==c):
+
+        print("Current values used for checking:")
+        print(f"current value of a: {a}")
+        print(f"current value of b: {b}")
+        try:
+            print(f"current value of desired_value: {desired_value}")
+        except Exception as e:
+            print (f"Cannot print desired_value, error: {e}")
+        print(f"current value of verify: {verify}")
+
+        if (username == "admin") and (password == "admin") and (int(verify) == desired_value):
+            print("Credentials are correct")
             error = None
             return redirect("/")
         else:
