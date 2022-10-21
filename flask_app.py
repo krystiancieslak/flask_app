@@ -34,10 +34,12 @@ def login():
 
     a=session["a"]
     b=session["b"]
+    username=session.get("username", "Username")
 
     print("Current values used for checking:")
     print(f"current value of a: {a}")
     print(f"current value of b: {b}")
+    print(f"current value of username: {username}")
     try:
         print(f"current value of desired_value: {desired_value}")
     except Exception as e:
@@ -46,15 +48,17 @@ def login():
     if request.method == "POST":
         print("This is happening only in POST")
         desired_value = a + b
-
+        
         print("Getting username, password and verify value...")
         username = request.form.get('username')
+        session["username"] = username
         password = request.form.get('password')
         verify = request.form.get('verify')
 
         print("Current values used for checking:")
         print(f"current value of a: {a}")
         print(f"current value of b: {b}")
+        print(f"current value of username: {username}")
         try:
             print(f"current value of desired_value: {desired_value}")
         except Exception as e:
@@ -67,9 +71,9 @@ def login():
             return redirect("/")
         else:
             error = "Invalid credentials"
-            return error
+            return redirect("/login")
     else:
-        return render_template("login.html", a=a, b=b)
+        return render_template("login.html", a=a, b=b, username=username)
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
